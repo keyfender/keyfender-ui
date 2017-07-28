@@ -25,6 +25,18 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)(\?\S*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 25000,
+          name: '[name].[ext]?[hash]'
+        },
+      },
+      {
         test: /\.(jpg|png|svg)$/,
         loader: 'url-loader',
         options: {
@@ -53,7 +65,10 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new webpack.NormalModuleReplacementPlugin(/element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/, 'element-ui/lib/locale/lang/en')
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {

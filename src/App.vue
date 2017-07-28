@@ -1,21 +1,24 @@
 <template>
   <div id="app">
-    <h1><img id="logo" src="./assets/nethsm-logo.svg"/>NetHSM</h1>
+    <h1>
+      <img id="logo" src="./assets/nethsm-logo.svg" />NetHSM</h1>
     <key-list></key-list>
     <h2>Links</h2>
     <ul>
-      <li><a href="https://github.com/nethsm" target="_blank">GitHub</a></li>
+      <li>
+        <a href="https://github.com/nethsm" target="_blank">GitHub</a>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import KeyList from './KeyList.vue'
+import KeyList from './KeyList.vue';
+var components = {};
+components[KeyList.name] = KeyList;
 export default {
   name: 'app',
-  components: {
-    KeyList
-  }
+  components: components
 }
 </script>
 
@@ -24,30 +27,30 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-/*  text-align: center;*/
+  /*  text-align: center;*/
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 
 img#logo {
-  height: 1em;
+  height: 2em;
 }
 
 h1, h2 {
   font-weight: normal;
 }
 
-ul {
-/*  list-style-type: none;*/
-/*  padding: 0; */
-}
+/* ul {
+  list-style-type: none;
+  padding: 0; 
+} */
 
-li {
-/*  display: inline-block;*/
-/*  margin: 0 10px;*/
-}
+/* li {
+  display: inline-block;
+  margin: 0 10px;
+} */
 
-a {
+/* a {
   color: #42b983;
-}
+} */
 </style>

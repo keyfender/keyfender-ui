@@ -1,33 +1,122 @@
 <template>
-  <ul id="key-list">
-    <key-item
-      v-for="location in locations"
-      v-bind:key="location"
-      v-bind:location="location">
-    </key-item>
-  </ul>
+  <div id="key-list">
+    <h1>Keys</h1>
+    <p><el-button type="primary" @click="handleCreate()">Create Key</el-button></p>
+    <el-table v-bind:data="keys" stripe style="width=100%">
+      <el-table-column type="expand">
+        <template scope="props">
+          <table id="key-details">
+            <tr>
+              <th>Location:</th>
+              <td>{{ props.row.location }}</td>
+            </tr>
+            <tr>
+              <th>Modulus:</th>
+              <td>{{ props.row.publicKey.modulus }}</td>
+            </tr>
+            <tr>
+              <th>Public exponent:</th>
+              <td>{{ props.row.publicKey.publicExponent }}</td>
+            </tr>
+          </table>
+        </template>
+      </el-table-column>
+      <el-table-column prop="id" label="ID">
+      </el-table-column>
+      <el-table-column prop="purpose" label="Purpose">
+      </el-table-column>
+      <el-table-column prop="algorithm" label="Algorithm">
+      </el-table-column>
+      <el-table-column prop="length" label="Size">
+      </el-table-column>
+      <el-table-column label="Operations">
+        <template scope="scope">
+          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+          <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
-import KeyItem from './KeyItem.vue'
+import {
+  Button,
+  Table,
+  TableColumn
+} from 'element-ui';
+
+function normal64(base64) {
+    return base64.replace(/\-/g, '+').replace(/_/g, '/');
+}
+var components = {};
+components[Table.name] = Table;
+components[TableColumn.name] = TableColumn;
+components[Button.name] = Button;
 export default {
   name: 'key-list',
-  data() {
+  data: function () {
     return {
-      locations: []
+      keys: []
     };
   },
-  components: {
-    KeyItem
-  },
-  created() {
-    $axios.get("/api/v0/keys")
-      .then(result => result.data.data.forEach(item => 
-        this.locations.push(item.location), this))
-      .catch(error => console.log('error:', error));
+  components: components,
+  created: function () { window.test = this; this.fetchKeys() },
+  methods: {
+    fetchKeys() {
+      $axios.get("/api/v0/keys")
+        .then(result => {
+          var new_keys = [];
+          this.keys = new_keys; // link data to new_keys
+          result.data.data.forEach(item =>
+            $axios.get(item.location)
+              .then(result => {
+                result.data.data.location = item.location;
+                result.data.data.length = atob(normal64(result.data.data.publicKey.modulus)).length*8;
+                new_keys.push(result.data.data)
+              })
+              .catch(error => console.log('get key details error:', error))
+          )
+        })
+        .catch(error => console.log('get keylist error:', error));
+    },
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      $axios.delete(row.location)
+        .then(this.fetchKeys())
+        .catch(error => console.log('delete error:', error));
+      console.log(index, row);
+    },
+    handleCreate(index, row) {
+      var keyConfig = {
+        "purpose": "signing",
+        "algorithm":"RSA",
+        "length":4096
+      };
+      $axios.post("/api/v0/keys", keyConfig)
+        .then(this.fetchKeys())
+        .catch(error => console.log('create error:', error));
+      console.log(index, row);
+    }
   }
 }
 </script>
 
 <style>
+#key-details td {
+  /* let the element expand but not overflow */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
+#key-details th {
+  padding: 1ex;
+  text-align: right;
+}
 </style>
