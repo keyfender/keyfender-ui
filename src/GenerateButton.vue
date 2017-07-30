@@ -1,7 +1,7 @@
 <template>
-  <div class="create-button">
-    <el-button type="primary" @click="createFormVisible = true">Create Key</el-button>
-    <el-dialog title="Create key" :visible.sync="createFormVisible">
+  <div class="generate-button">
+    <el-button type="primary" @click="generateFormVisible = true">Generate Key</el-button>
+    <el-dialog title="Generate Key" :visible.sync="generateFormVisible">
       <el-form :model="form">
         <el-form-item label="Length" :label-width="formLabelWidth">
           <el-select v-model="form.length">
@@ -16,10 +16,13 @@
             <el-option label="Encryption" value="encrypt"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="ID" :label-width="formLabelWidth">
+          <el-input v-model="form.id" auto-complete="off" placeholder="Automatic"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="createFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="handleCreate">Confirm</el-button>
+        <el-button @click="generateFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="handleGenerate">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -32,7 +35,8 @@ import {
   Form,
   FormItem,
   Select,
-  Option
+  Option,
+  Input
 } from 'element-ui';
 
 var components = {};
@@ -42,30 +46,36 @@ components[Form.name] = Form;
 components[FormItem.name] = FormItem;
 components[Select.name] = Select;
 components[Option.name] = Option;
+components[Input.name] = Input;
 export default {
-  name: 'create-button',
+  name: 'generate-button',
   data: function () {
     return {
-      createFormVisible: false,
+      generateFormVisible: false,
       form: {
           purpose: 'encrypt',
-          length: "2048",
+          length: '2048',
+          id: ''
         },
       formLabelWidth: '120px'
     };
   },
   components: components,
   methods: {
-    handleCreate() {
-      this.createFormVisible = false;
+    handleGenerate() {
+      this.generateFormVisible = false;
       var keyConfig = {
-        "purpose": this.form.purpose,
-        "algorithm":"RSA",
-        "length": parseInt(this.form.length)
+        'purpose': this.form.purpose,
+        'algorithm':'RSA',
+        'length': parseInt(this.form.length)
       };
-      $axios.post("/api/v0/keys", keyConfig)
-        .then(this.$emit("created"))
-        .catch(error => console.log('create error:', error));
+      if (this.form.id.length) {
+        keyConfig.id = this.form.id
+        this.form.id = ''
+      }
+      $axios.post('/api/v0/keys', keyConfig)
+        .then(this.$emit('generated'))
+        .catch(error => console.log('generate error:', error));
     },
   },
 }

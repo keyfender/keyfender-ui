@@ -4,6 +4,7 @@ import axios from 'axios'
 import "./main.css"
 
 window.$config = Object.freeze({
+  //url: '',
   url: 'http://localhost:8081',
   //url: 'http://localhost:8081/api/v0/system/status',
   username: 'admin',

@@ -2,7 +2,7 @@
   <div id="key-list">
     <h1>Keys</h1>
     <p>
-      <create-button @created="fetchKeys">Create Key</create-button>
+      <generate-button @generated="fetchKeys"></generate-button>
     </p>
     <el-table v-bind:data="keys" stripe style="width=100%">
       <el-table-column type="expand">
@@ -49,7 +49,7 @@ import {
   Popover
 } from 'element-ui';
 import DeleteButton from './DeleteButton.vue';
-import CreateButton from './CreateButton.vue';
+import GenerateButton from './GenerateButton.vue';
 
 function normal64(base64) {
     return base64.replace(/\-/g, '+').replace(/_/g, '/');
@@ -61,7 +61,7 @@ components[TableColumn.name] = TableColumn;
 components[Button.name] = Button;
 components[Popover.name] = Popover;
 components[DeleteButton.name] = DeleteButton;
-components[CreateButton.name] = CreateButton;
+components[GenerateButton.name] = GenerateButton;
 
 export default {
   name: 'key-list',
@@ -71,7 +71,7 @@ export default {
     };
   },
   components: components,
-  created: function () { window.test = this; this.fetchKeys() },
+  created: function () { this.fetchKeys() },
   methods: {
     fetchKeys() {
       $axios.get("/api/v0/keys")
