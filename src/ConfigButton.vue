@@ -10,7 +10,7 @@
           <el-input v-model="config.username"></el-input>
         </el-form-item>
         <el-form-item label="Password" :label-width="formLabelWidth">
-          <el-input v-model="config.password"></el-input>
+          <el-input type="password" v-model="config.password"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
