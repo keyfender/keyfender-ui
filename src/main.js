@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
+import "./main.css"
 
 window.$config = Object.freeze({
   url: 'http://localhost:8081',

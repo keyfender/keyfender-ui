@@ -1,7 +1,9 @@
 <template>
   <div id="key-list">
     <h1>Keys</h1>
-    <p><el-button type="primary" @click="handleCreate()">Create Key</el-button></p>
+    <p>
+      <create-button @created="fetchKeys">Create Key</create-button>
+    </p>
     <el-table v-bind:data="keys" stripe style="width=100%">
       <el-table-column type="expand">
         <template scope="props">
@@ -32,7 +34,7 @@
       <el-table-column label="Operations">
         <template scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-          <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+          <delete-button @click="handleDelete(scope.$index, scope.row)"></delete-button>
         </template>
       </el-table-column>
     </el-table>
@@ -43,16 +45,24 @@
 import {
   Button,
   Table,
-  TableColumn
+  TableColumn,
+  Popover
 } from 'element-ui';
+import DeleteButton from './DeleteButton.vue';
+import CreateButton from './CreateButton.vue';
 
 function normal64(base64) {
     return base64.replace(/\-/g, '+').replace(/_/g, '/');
 }
+
 var components = {};
 components[Table.name] = Table;
 components[TableColumn.name] = TableColumn;
 components[Button.name] = Button;
+components[Popover.name] = Popover;
+components[DeleteButton.name] = DeleteButton;
+components[CreateButton.name] = CreateButton;
+
 export default {
   name: 'key-list',
   data: function () {
@@ -87,18 +97,9 @@ export default {
       $axios.delete(row.location)
         .then(this.fetchKeys())
         .catch(error => console.log('delete error:', error));
-      console.log(index, row);
     },
-    handleCreate(index, row) {
-      var keyConfig = {
-        "purpose": "signing",
-        "algorithm":"RSA",
-        "length":4096
-      };
-      $axios.post("/api/v0/keys", keyConfig)
-        .then(this.fetchKeys())
-        .catch(error => console.log('create error:', error));
-      console.log(index, row);
+    logEvent(event) {
+      console.log(event);
     }
   }
 }
