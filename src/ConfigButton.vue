@@ -1,5 +1,5 @@
 <template>
-  <div class="config-button">
+  <span class="config-button">
     <el-button type="primary" @click="handleShow">Config</el-button>
     <el-dialog title="Configuration" :visible.sync="configFormVisible">
       <el-form>
@@ -18,7 +18,7 @@
         <el-button type="primary" @click="handleConfirm">Confirm</el-button>
       </span>
     </el-dialog>
-  </div>
+  </span>
 </template>
 
 <script>

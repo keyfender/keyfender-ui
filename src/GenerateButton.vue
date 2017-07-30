@@ -1,5 +1,5 @@
 <template>
-  <div class="generate-button">
+  <span class="generate-button">
     <el-button type="primary" @click="generateFormVisible = true">Generate Key</el-button>
     <el-dialog title="Generate Key" :visible.sync="generateFormVisible">
       <el-form :model="form">
@@ -25,7 +25,7 @@
         <el-button type="primary" @click="handleGenerate">Confirm</el-button>
       </span>
     </el-dialog>
-  </div>
+  </span>
 </template>
 
 <script>

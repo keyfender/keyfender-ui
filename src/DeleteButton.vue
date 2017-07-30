@@ -1,5 +1,5 @@
 <template>
-  <el-button size="small" type="danger" v-popover:deletepopover>
+  <span>
     <el-popover ref="deletepopover" placement="top" width="160" v-model="popupVisible">
       <p>Are you sure to delete this?</p>
       <div style="text-align: right; margin: 0">
@@ -7,8 +7,8 @@
         <el-button type="danger" size="mini" @click="$emit('click')">confirm</el-button>
       </div>
     </el-popover>
-    Delete
-  </el-button>
+    <el-button size="small" type="danger" v-popover:deletepopover>Delete</el-button>
+  </span>
 </template>
 
 <script>
