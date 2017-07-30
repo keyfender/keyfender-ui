@@ -73,7 +73,7 @@ export default {
         keyConfig.id = this.form.id
         this.form.id = ''
       }
-      $axios.post('/api/v0/keys', keyConfig)
+      $axios().post('/api/v0/keys', keyConfig)
         .then(this.$emit('generated'))
         .catch(error => console.log('generate error:', error));
     },

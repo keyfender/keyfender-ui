@@ -3,6 +3,7 @@
     <h1>Keys</h1>
     <p>
       <generate-button @generated="fetchKeys"></generate-button>
+      <config-button></config-button>
     </p>
     <el-table v-bind:data="keys" stripe style="width=100%">
       <el-table-column type="expand">
@@ -50,6 +51,7 @@ import {
 } from 'element-ui';
 import DeleteButton from './DeleteButton.vue';
 import GenerateButton from './GenerateButton.vue';
+import ConfigButton from './ConfigButton.vue';
 
 function normal64(base64) {
     return base64.replace(/\-/g, '+').replace(/_/g, '/');
@@ -62,6 +64,7 @@ components[Button.name] = Button;
 components[Popover.name] = Popover;
 components[DeleteButton.name] = DeleteButton;
 components[GenerateButton.name] = GenerateButton;
+components[ConfigButton.name] = ConfigButton;
 
 export default {
   name: 'key-list',
@@ -74,12 +77,12 @@ export default {
   created: function () { this.fetchKeys() },
   methods: {
     fetchKeys() {
-      $axios.get("/api/v0/keys")
+      $axios().get("/api/v0/keys")
         .then(result => {
           var new_keys = [];
           this.keys = new_keys; // link data to new_keys
           result.data.data.forEach(item =>
-            $axios.get(item.location)
+            $axios().get(item.location)
               .then(result => {
                 result.data.data.location = item.location;
                 result.data.data.length = atob(normal64(result.data.data.publicKey.modulus)).length*8;
@@ -94,7 +97,7 @@ export default {
       console.log(index, row);
     },
     handleDelete(index, row) {
-      $axios.delete(row.location)
+      $axios().delete(row.location)
         .then(this.fetchKeys())
         .catch(error => console.log('delete error:', error));
     },

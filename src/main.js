@@ -3,21 +3,21 @@ import App from './App.vue'
 import axios from 'axios'
 import "./main.css"
 
-window.$config = Object.freeze({
+window.$config = {
   //url: '',
   url: 'http://localhost:8081',
   //url: 'http://localhost:8081/api/v0/system/status',
   username: 'admin',
   password: 'secret'
-});
+};
 
-window.$axios = Object.freeze(new axios.create({
+window.$axios = function () { return new axios.create({
   baseURL: $config.url,
   auth: {
     username: $config.username,
     password: $config.password
   }
-}));
+})};
 
 var vm = new Vue({
   el: '#app',
