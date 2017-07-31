@@ -43,28 +43,27 @@
 </template>
 
 <script>
+import Utils from "./utils.js";
 import {
   Button,
   Table,
   TableColumn,
-  Popover
 } from 'element-ui';
+import ConfigButton from './ConfigButton.vue';
 import DeleteButton from './DeleteButton.vue';
 import GenerateButton from './GenerateButton.vue';
-import ConfigButton from './ConfigButton.vue';
 
 function normal64(base64) {
     return base64.replace(/\-/g, '+').replace(/_/g, '/');
 }
 
 var components = {};
-components[Table.name] = Table;
-components[TableColumn.name] = TableColumn;
 components[Button.name] = Button;
-components[Popover.name] = Popover;
+components[ConfigButton.name] = ConfigButton;
 components[DeleteButton.name] = DeleteButton;
 components[GenerateButton.name] = GenerateButton;
-components[ConfigButton.name] = ConfigButton;
+components[Table.name] = Table;
+components[TableColumn.name] = TableColumn;
 
 export default {
   name: 'key-list',
@@ -88,18 +87,21 @@ export default {
                 result.data.data.length = atob(normal64(result.data.data.publicKey.modulus)).length*8;
                 new_keys.push(result.data.data)
               })
-              .catch(error => console.log('get key details error:', error))
+              .catch(error => Utils.reportError('Fetching key details failed', error))
           )
         })
-        .catch(error => console.log('get keylist error:', error));
+        .catch(error => Utils.reportError('Fetching keys failed', error));
     },
     handleEdit(index, row) {
       console.log(index, row);
     },
     handleDelete(index, row) {
       $axios().delete(row.location)
-        .then(this.fetchKeys())
-        .catch(error => console.log('delete error:', error));
+        .then(result => {
+          this.fetchKeys();
+          Utils.reportSuccess("Key '" + row.id + "' deleted");
+        })
+        .catch(error => Utils.reportError('Delete failed', error));
     },
     logEvent(event) {
       console.log(event);

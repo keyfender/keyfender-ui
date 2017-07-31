@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import Utils from "./utils.js";
 import {
   Button,
   Dialog,
@@ -44,9 +45,9 @@ components[Button.name] = Button;
 components[Dialog.name] = Dialog;
 components[Form.name] = Form;
 components[FormItem.name] = FormItem;
-components[Select.name] = Select;
-components[Option.name] = Option;
 components[Input.name] = Input;
+components[Option.name] = Option;
+components[Select.name] = Select;
 export default {
   name: 'generate-button',
   data: function () {
@@ -64,19 +65,22 @@ export default {
   methods: {
     handleGenerate() {
       this.generateFormVisible = false;
-      var keyConfig = {
+      var keyParams = {
         'purpose': this.form.purpose,
         'algorithm':'RSA',
         'length': parseInt(this.form.length)
       };
       if (this.form.id.length) {
-        keyConfig.id = this.form.id
-        this.form.id = ''
+        keyParams.id = this.form.id;
+        this.form.id = '';
       }
-      $axios().post('/api/v0/keys', keyConfig)
-        .then(this.$emit('generated'))
-        .catch(error => console.log('generate error:', error));
-    },
+      $axios().post('/api/v0/keys', keyParams)
+        .then(result => {
+          this.$emit('generated');
+          Utils.reportSuccess("Key '" + result.data.data.id + "' generated");
+        })
+        .catch(error => Utils.reportError('Generation failed', error));
+    }
   },
 }
 </script>
