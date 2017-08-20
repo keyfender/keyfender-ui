@@ -5,8 +5,8 @@ import "./main.css"
 
 window.$config = {
   //url: '',
-  url: 'http://localhost:8081',
-  //url: 'http://localhost:8081/api/v0/system/status',
+  //url: 'http://localhost:8081',
+  url: 'https://a6n.de:4433',
   username: 'admin',
   password: 'secret'
 };

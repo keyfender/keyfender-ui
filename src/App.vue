@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <h1>
-      <img id="logo" src="./assets/nethsm-logo.svg" />NetHSM</h1>
+      <img id="logo" src="./assets/logo.png" />key<b>fender</b></h1>
     <key-list></key-list>
     <h2>Links</h2>
     <ul>
       <li>
-        <a href="https://github.com/nethsm" target="_blank">GitHub</a>
+        <a href="https://github.com/keyfender" target="_blank">GitHub</a>
       </li>
     </ul>
   </div>
@@ -28,6 +28,7 @@ export default {
 
 img#logo {
   height: 2em;
+  margin-bottom: -.6em;
 }
 
 h1, h2 {

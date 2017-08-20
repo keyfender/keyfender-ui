@@ -1,6 +1,6 @@
-# nethsm-ui
+# keyfender-ui
 
-> Web UI for NetHSM
+> Web UI for keyfender
 
 ## Build Setup
 

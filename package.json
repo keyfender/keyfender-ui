@@ -1,6 +1,6 @@
 {
-  "name": "nethsm-ui",
-  "description": "Web UI for NetHSM",
+  "name": "keyfender-ui",
+  "description": "Web UI for keyfender",
   "version": "1.0.0",
   "author": "Sven Anderson <sven@anderson.de>",
   "private": true,
