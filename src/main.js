@@ -6,7 +6,7 @@ import "./main.css"
 window.$config = {
   //url: '',
   //url: 'http://localhost:8081',
-  url: 'http://' + window.location.hostname + ':8081',
+  url: window.location.origin,
   username: 'admin',
   password: 'secret'
 };
