@@ -2,12 +2,13 @@
   <div id="key-list">
     <h1>Keys</h1>
     <p>
+      <el-button type="primary" @click="fetchKeys">Reload</el-button>
       <generate-button @generated="fetchKeys"></generate-button>
       <config-button></config-button>
     </p>
     <el-table v-bind:data="keys" stripe style="width=100%">
       <el-table-column type="expand">
-        <template scope="props">
+        <template slot-scope="props">
           <table id="key-details">
             <tr>
               <th>Location:</th>
@@ -33,7 +34,7 @@
       <el-table-column prop="length" label="Size">
       </el-table-column>
       <el-table-column label="Operations">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
           <delete-button @click="handleDelete(scope.$index, scope.row)"></delete-button>
         </template>
